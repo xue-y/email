@@ -2,73 +2,34 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>发送邮件--多个用户多个附件</title>
-    <link rel="stylesheet" href="kindeditor/themes/default/default.css" />
-    <script src="kindeditor/kindeditor-all.js"></script>
-    <!--<script  src="kindeditor/lang/zh-CN.js"></script>--> <!--默认中文-->
-    <script src="jquery.js"></script>
-    <style>
-        form,h2{text-align:center;}
-        form input[type='file'],input[type='text'],textarea,select{width:300px; height:30px; line-height:30px; padding:0px 5px; border-radius:3px;border:none;border:1px solid #CCC}
-        form textarea{ resize:vertical; height:100px}
-        form input[type='submit'],input[type='button']{margin-right:50px}
-        form span{display:block;color:#999;font-size:14px;width:300px; text-align: left; margin:0 auto; padding-left:70px;}
-        form select{font-size:16px; line-height:30px;width:312px;}
-        .center{ line-height: 1.2em; color:#F55151;font-size: 14px;margin:0 auto; width:550px;}
-        form p b{font-size: 20px; padding: 10px; cursor: pointer}
-        form .mail_addr input{width:260px;}
-        form .mail_addr b~input{margin-left: 49px; margin-bottom: 10px;}
-        form input[type='submit'],input[type='reset'],input[type='button']{ width:100px; height: 30px; margin-top: 30px;}
-        .load{ position: absolute; left:50%; top:50%; width:100px; height: 100px; background-color: rgba(0,0,0,0.5); margin-top: -50px; margin-left: -50px; display: none;}
-        .load img{ display: block; margin: 30% auto;  line-height: 100px;}
-
-    </style>
-    <script>
-        KindEditor.ready(function(K) {
-            var editor = K.editor({
-                fileManagerJson : 'kindeditor/php/file_manager_json.php'
-            });
-            K('#filemanager').click(function() {
-                editor.loadPlugin('filemanager', function() {
-                    editor.plugin.filemanagerDialog({
-                        viewType : 'VIEW',
-                        dirName : '',
-                        clickFn : function(url, title) {
-                            K('#url').val(url);
-                            editor.hideDialog();
-                        }
-                    });
-                });
-            });
-        });
-    </script>
-
+<title>发送邮件---单用户单附件</title>
+<style>
+form,h2{text-align:center;}
+input[type='file'],input[type='text'],textarea,select{width:300px; height:30px; line-height:30px; padding:0px 5px; border-radius:3px;border:none;border:1px solid #CCC}
+textarea{ resize:vertical; height:100px}
+input[type='submit']{margin-right:50px}
+span{display:block;color:#999;font-size:14px;}
+select{font-size:16px; line-height:30px;width:312px;}
+</style>
 </head>
 
 <body>
 <h2>发送邮件</h2>
-<div class="center">
-    <p>一次最多可以发送10，一次最多10个附件，单个附件最大2MB,总文件大小最大8MB</p>
-    <p>如果修改调整上传文件个数 修改php.ini max_file_uploads=你需要的文件个数</p>
-    <p>如果修改调整单个文件上传最多大小修改php.ini upload_max_filesize=你需要的XXMB</p>
-    <p>如果修改调整总文件上传大小修改php.ini post_max_size=你需要的XXMB</p>
-</div>
-<form action="/mail2/send_mail.php" method="post" enctype="multipart/form-data">
+<form action="/mail/send_mail.php" method="post" enctype="multipart/form-data">
 <p><label>邮件的邮箱</label>
   <select name="mail"><option>选择向用户发送邮件的邮箱</option>
     <option  selected value="sina">新浪邮箱</option>
     <option value="139">139邮箱</option>
   </select>
 </p>
-  <p  class="mail_addr">
+
+  <p>
     <label>收件人姓名</label>
-    <input type="text" name="name[]" placeholder="第1个收件人姓名">
-    <b onclick="mail_name(this)">+</b><br/>
+    <input type="text" name="name">
   </p>
-  <p  class="mail_addr">
+  <p>
     <label>收件人邮箱</label>
-    <input type="text" name="email[]" placeholder="第1个邮箱地址">
-    <b onclick="mail_addr(this)">+</b><br/>
+    <input type="text" name="email">
   </p>
   <p>
     <label>邮件的主题</label>
@@ -81,79 +42,9 @@
   </p>
   <p>
     <label>邮件的附件</label>
-    <input type="file" name="file[]" value="" class="file"   multiple="multiple">  <span>本地上传允许一次上传多个文件</span>
-    <br/><input type="text" id="url" value="" name="file_server"/> <input type="button" id="filemanager" value="服务器上传" />
+    <input type="file" name="file" value="" >
   </p>
-
-  <p><input type="button" value="发送邮件" onclick="check_file(this)"><input type="reset" value="重置"></p>
+  <p><input type="submit" value="发送邮件"><input type="reset" value="重置"></p>
 </form>
-<div class="load">
-    <img src="./kindeditor/themes/common/loading.gif">
-</div>
-<script>
-    function mail_addr(t)
-    {
-        var len=$(t).parent('p').find("input").length;
-        if(len>9){
-            alert("最多添加10个用户邮箱地址");return;
-        }
-        $(t).parent('p').append('<br/><input type="text" name="email[]"  placeholder="第'+(len+1)+'个邮箱地址">');
-    }
-    function mail_name(t)
-    {
-        var len=$(t).parent('p').find("input").length;
-        if(len>9){
-            alert("最多添加10个邮箱用户");return;
-        }
-        $(t).parent('p').append('<br/><input type="text" name="name[]"  placeholder="第'+(len+1)+'个收件人姓名">');
-    }
-    function check_file(t)
-    {
-        var re=/^\s*$/;
-        var text_val=$("textarea").val();
-        var re_ver=re.test(text_val)
-        if(re_ver==true || text_val.length<5)
-        {
-            alert("邮件内容不得为空，字符不得小于5个");
-            return false;
-        }
-        
-        var file =$(".file").prop('files');
-        var file_len=file.length;
-        if(file_len>10)
-        {
-            alert("上传文件超过10个");return false;
-        }
-       // console.dir(file);
-        var fileSize=0;
-        var conut_size=0;
-        for(var i=0;i<file_len;i++)
-        {
-            //console.log(file[i]);
-            /*lastModified: 1505204874155
-             lastModifiedDate: Tue Sep 12 2017 16:27:54 GMT+0800 (中国标准时间)
-             name: "dede.txt"
-             size: 22180
-             type: "text/plain"
-            * */
-            fileSize=$(file)[i].size;
-            if(fileSize>(2*1024*1024))
-            {
-                alert($(file)[i].name+'大于2MB');return false;
-            }
-            conut_size+=fileSize;
-        }
-        conut_size=conut_size/1024/1024;
-        if(conut_size>8)
-        {
-            alert("总的上传文件大小"+conut_size.toFixed(2)+"大于8MB");
-            return false;
-        }else
-        {
-            $(".load").css("display","block");
-            $(t).attr("type","submit");
-        }
-    }
-</script>
 </body>
 </html>
