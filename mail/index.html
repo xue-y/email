@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>发送邮件---单用户单附件</title>
+<style>
+form,h2{text-align:center;}
+input[type='file'],input[type='text'],textarea,select{width:300px; height:30px; line-height:30px; padding:0px 5px; border-radius:3px;border:none;border:1px solid #CCC}
+textarea{ resize:vertical; height:100px}
+input[type='submit']{margin-right:50px}
+span{display:block;color:#999;font-size:14px;}
+select{font-size:16px; line-height:30px;width:312px;}
+</style>
+</head>
+
+<body>
+<h2>发送邮件</h2>
+<form action="/mail/send_mail.php" method="post" enctype="multipart/form-data">
+<p><label>邮件的邮箱</label>
+  <select name="mail"><option>选择向用户发送邮件的邮箱</option>
+    <option  selected value="sina">新浪邮箱</option>
+    <option value="139">139邮箱</option>
+  </select>
+</p>
+
+  <p>
+    <label>收件人姓名</label>
+    <input type="text" name="name">
+  </p>
+  <p>
+    <label>收件人邮箱</label>
+    <input type="text" name="email">
+  </p>
+  <p>
+    <label>邮件的主题</label>
+    <input type="text" name="tit">
+  </p>
+  <p>
+    <label>邮件的内容</label>
+    <textarea name="con"></textarea>
+    <span>支持html代码</span>
+  </p>
+  <p>
+    <label>邮件的附件</label>
+    <input type="file" name="file" value="" >
+  </p>
+  <p><input type="submit" value="发送邮件"><input type="reset" value="重置"></p>
+</form>
+</body>
+</html>
