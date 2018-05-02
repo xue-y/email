@@ -1684,10 +1684,11 @@ class PHPMailer {
       if ( !@is_file($path) ) {
         throw new phpmailerException($this->Lang('file_access') . $path, self::STOP_CONTINUE);
       }
-      $filename = basename($path);
-      if ( $name == '' ) {
-        $name = $filename;
-      }
+        $filename = basename($path);
+
+        if ( $name == '' ) {
+          $name = $filename;
+        }
 
       $this->attachment[] = array(
         0 => $path,
@@ -1881,7 +1882,8 @@ class PHPMailer {
    * @return string
    */
   public function EncodeHeader($str, $position = 'text') {
-    $x = 0;
+
+      $x = 0;
 
     switch (strtolower($position)) {
       case 'phrase':
