@@ -3,6 +3,5 @@
  > v2.0 版本是一次可以发送多人多个附件
  
 ### 源文件
- > SMTP 简单发送邮件：php使用smtp发送邮件.zip
- > SMTP|POP3 支持附件支持多语言发送邮件：PHP在线生成excel并发送邮件.zip
-	
+ > SMTP 简单发送邮件：php使用smtp发送邮件.zip    
+ > SMTP|POP3 支持附件支持多语言发送邮件：PHP在线生成excel并发送邮件.zip     
